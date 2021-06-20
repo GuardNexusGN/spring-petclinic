@@ -5,6 +5,8 @@ pipeline {
     }
 	
     environment {
+        APP_PORT = '8080'
+
         DOCKER_LOGIN = credentials('docker_login')
         DOCKER_PASSWORD = credentials('docker_password')
     }
@@ -13,7 +15,7 @@ pipeline {
         stage("Test 1") {
                 steps {
                         sh "./mvnw package"
-                        sh "java -jar target/*.jar --server.port=8080"
+                        sh "java -jar target/*.jar --server.port=${APP_PORT}"
                 }
         }
     }

@@ -22,7 +22,7 @@ pipeline {
                 
     post {
         always {
-            archiveArtifacts artifacts: '*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
     }
 }

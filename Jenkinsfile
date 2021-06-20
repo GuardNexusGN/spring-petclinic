@@ -14,7 +14,7 @@ pipeline {
     stages('Tests on worker') {
         stage("Test 1") {
                 steps {
-                        sh "./mvnw package"
+                        sh "sudo ./mvnw package"
                         sh "java -jar target/*.jar --server.port=${APP_PORT}"
                 }
         }

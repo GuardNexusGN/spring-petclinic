@@ -15,7 +15,7 @@ pipeline {
         stage("Test 1") {
                 steps {
                         sh "sudo ./mvnw package"
-                        #sh "java -jar target/*.jar --server.port=${APP_PORT}"
+                        //sh "java -jar target/*.jar --server.port=${APP_PORT}"
                 }
         }
     }

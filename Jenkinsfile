@@ -9,14 +9,20 @@ pipeline {
         DOCKER_PASSWORD = credentials('docker_password')
     }
   
-	stages('Tests on worker') {
-	        stage("Test 1") {
-			steps {
-				sh "ansible --version"
-				sh "docker version"
-				sh "java -version"
-				sh "echo \"LOL\" >> main_log.log"
-			}
-		}
+    stages('Tests on worker') {
+        stage("Test 1") {
+                steps {
+                        sh "ansible --version"
+                        sh "docker version"
+                        sh "java -version"
+                        sh "echo \"LOL\" >> main_log.log"
+                }
+        }
+    }
+                
+    post {
+        always {
+            archiveArtifacts artifacts: '*.jar', fingerprint: true
+        }
     }
 }

@@ -12,12 +12,12 @@ pipeline {
     }
   
     stages('Do it on worker') {
-        stage("Compile and test") {
+        /*stage("Compile and test") {
                 steps {
                         sh "sudo ./mvnw package"
                         //sh "java -jar target/*.jar --server.port=${APP_PORT}"
                 }
-        }
+        }*/
             
         stage('Build image') {
                 steps {

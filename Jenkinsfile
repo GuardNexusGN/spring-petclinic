@@ -1,17 +1,24 @@
+#!/usr/bin/env groovy
 pipeline {
-    agent none
-     environment {
+    agent { 
+		node { 
+			label 'worker' 
+		} 
+	}
+	
+    environment {
         DOCKER_LOGIN = credentials('docker_login')
         DOCKER_PASSWORD = credentials('docker_password')
     }
   
-   stage('Test on Windows') {
-        agent {
-            label 'worker'
-        }
-     
-        steps {
-            echo "LOL" >> main_log.log
-        }
+	stages('Tests on worker') {
+		stage("Test 1") {
+			steps {
+				sh "ansible --version"
+				sh "docker version"
+				sh "java -version"
+				sh "echo "LOL" >> main_log.log"
+			}
+		}
     }
 }

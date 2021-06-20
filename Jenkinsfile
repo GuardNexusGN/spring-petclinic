@@ -22,7 +22,7 @@ pipeline {
         stage('Build image') {
                 steps {
                         script {
-                                dockerImage = docker.build("${REGISTRY_DOCKER} + \":$BUILD_NUMBER\"", "--build-arg app_port=${APP_PORT}")
+                                dockerImage = docker.build("${REGISTRY_DOCKER}:$BUILD_NUMBER", "--build-arg", "app_port=${APP_PORT}")
                         }
                 }
         }

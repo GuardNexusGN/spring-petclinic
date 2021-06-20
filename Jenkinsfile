@@ -12,10 +12,8 @@ pipeline {
     stages('Tests on worker') {
         stage("Test 1") {
                 steps {
-                        sh "ansible --version"
-                        sh "docker version"
-                        sh "java -version"
-                        sh "echo \"LOL\" >> main_log.log"
+                        sh "./mvnw package"
+                        sh "java -jar target/*.jar"
                 }
         }
     }

@@ -5,10 +5,10 @@ pipeline {
     }
 	
     environment {
-        APP_PORT = '8080'
+        APP_PORT='8080'
 
-        REGISTRY_DOCKER = "guardnexus/petclinic"
-        CREDENTIALS-DOCKER = 'dockerhub_guardnexus'
+        REGISTRY_DOCKER='guardnexus/petclinic'
+        CREDENTIALS-DOCKER='dockerhub_guardnexus'
     }
   
     stages('Do it on worker') {
@@ -22,7 +22,7 @@ pipeline {
         stage('Build image') {
                 steps {
                         script {
-                                dockerImage = docker.build("registry + \":$BUILD_NUMBER\"", "--build-arg app_port=${APP_PORT}")
+                                dockerImage = docker.build("${REGISTRY_DOCKER} + \":$BUILD_NUMBER\"", "--build-arg app_port=${APP_PORT}")
                         }
                 }
         }
@@ -30,7 +30,7 @@ pipeline {
         stage('Deploy image') {
                 steps {
                         script {
-                                docker.withRegistry( '', registryCredential ) {
+                                docker.withRegistry( '', ${CREDENTIALS-DOCKER} ) {
                                         dockerImage.push()
                                }
                         }
@@ -39,7 +39,7 @@ pipeline {
             
         stage('Remove local docker image') {
                 steps {
-                        sh "docker rmi $registry:$BUILD_NUMBER"
+                        sh "docker rmi ${REGISTRY_DOCKER}:$BUILD_NUMBER"
                 }
         }
     }

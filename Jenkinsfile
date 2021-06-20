@@ -17,7 +17,7 @@ pipeline {
 				sh "ansible --version"
 				sh "docker version"
 				sh "java -version"
-				sh "echo "LOL" >> main_log.log"
+				sh "echo \"LOL\" >> main_log.log"
 			}
 		}
     }

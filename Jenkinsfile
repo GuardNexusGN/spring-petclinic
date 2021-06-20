@@ -13,7 +13,7 @@ pipeline {
         stage("Test 1") {
                 steps {
                         sh "./mvnw package"
-                        sh "java -jar target/*.jar"
+                        sh "java -jar target/*.jar --server.port=8080"
                 }
         }
     }

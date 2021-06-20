@@ -1,10 +1,8 @@
 #!/usr/bin/env groovy
 pipeline {
     agent { 
-		node { 
-			label 'worker' 
-		} 
-	}
+        label 'worker' 
+    }
 	
     environment {
         DOCKER_LOGIN = credentials('docker_login')
@@ -12,7 +10,7 @@ pipeline {
     }
   
 	stages('Tests on worker') {
-		stage("Test 1") {
+	        stage("Test 1") {
 			steps {
 				sh "ansible --version"
 				sh "docker version"

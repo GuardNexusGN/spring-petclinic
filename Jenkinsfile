@@ -8,7 +8,7 @@ pipeline {
         APP_PORT='8080'
 
         REGISTRY_DOCKER='guardnexus/petclinic'
-        CREDENTIALS-DOCKER='dockerhub_guardnexus'
+        CREDENTIALS_DOCKER='dockerhub_guardnexus'
     }
   
     stages('Do it on worker') {
@@ -30,7 +30,7 @@ pipeline {
         stage('Deploy image') {
                 steps {
                         script {
-                                docker.withRegistry( '', ${CREDENTIALS-DOCKER} ) {
+                                docker.withRegistry( '', ${CREDENTIALS_DOCKER} ) {
                                         dockerImage.push()
                                }
                         }

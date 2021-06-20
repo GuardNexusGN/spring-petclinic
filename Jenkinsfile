@@ -7,15 +7,39 @@ pipeline {
     environment {
         APP_PORT = '8080'
 
-        DOCKER_LOGIN = credentials('docker_login')
-        DOCKER_PASSWORD = credentials('docker_password')
+        REGISTRY_DOCKER = "guardnexus/petclinic"
+        CREDENTIALS-DOCKER = 'dockerhub_guardnexus'
     }
   
-    stages('Tests on worker') {
-        stage("Test 1") {
+    stages('Do it on worker') {
+        stage("Compile and test") {
                 steps {
                         sh "sudo ./mvnw package"
                         //sh "java -jar target/*.jar --server.port=${APP_PORT}"
+                }
+        }
+            
+        stage('Build image') {
+                steps {
+                        script {
+                                dockerImage = docker.build registry + ":$BUILD_NUMBER" --build-arg app_port=${APP_PORT}
+                        }
+                }
+        }
+            
+        stage('Deploy image') {
+                steps {
+                        script {
+                                docker.withRegistry( '', registryCredential ) {
+                                        dockerImage.push()
+                               }
+                        }
+                }
+        }
+            
+        stage('Remove local docker image') {
+                steps {
+                        sh "docker rmi $registry:$BUILD_NUMBER"
                 }
         }
     }

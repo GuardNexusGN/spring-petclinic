@@ -7,8 +7,7 @@
     - name: Docker image build
       command: docker login --username {{ usernamed }} --password {{ passwordd }} docker.io
       
-    - name: Print the port of an app
-      debug:
+    - debug:
         msg: Port is: {{ app_port }}
     
     - name: Docker image build

@@ -4,7 +4,7 @@ RUN mkdir /usr/petclinicapp
 COPY targettemp/*.jar /usr/petclinicapp
 WORKDIR /usr/petclinicapp
 
-ARG APPD_PORT
+ARG APPD_PORT=8080
 EXPOSE $APPD_PORT
 
 RUN mv ./* spring-petclinic-latest.jar

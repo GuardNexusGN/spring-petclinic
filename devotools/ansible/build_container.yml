@@ -6,6 +6,10 @@
   tasks:
     - name: Docker image build
       command: docker login --username {{ usernamed }} --password {{ passwordd }} docker.io
+      
+    - name: Print the gateway for each host when defined
+      debug:
+        msg: {{ app_port }}
     
     - name: Docker image build
       command: docker build -t {{ registry_docker }}:{{ build_number }} --build-arg app_port={{ app_port }} {{ workspacej }}

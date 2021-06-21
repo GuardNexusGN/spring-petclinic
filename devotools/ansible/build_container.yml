@@ -5,10 +5,10 @@
   become_user: root
   tasks:
     - name: Docker image build
-      command: docker build {{ refistry_docker }}:{{ build_number }} --build-arg app_port={{ app_port }}
+      command: docker build -t {{ registry_docker }}:{{ build_number }} --build-arg app_port={{ app_port }} - < ../docker/Dockerfile
     
     - name: Docker image push
-      command: docker push {{ refistry_docker }}:{{ build_number }}
+      command: docker push {{ registry_docker }}:{{ build_number }}
       
     - name: Docker local image delete
       command: docker rmi {{ refistry_docker }}:{{ build_number }}

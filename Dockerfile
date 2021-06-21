@@ -9,4 +9,4 @@ ENV APPD_PORT_VAR=${APPD_PORT}
 EXPOSE $APPD_PORT
 
 RUN mv ./* spring-petclinic-latest.jar
-ENTRYPOINT ["java","-jar","spring-petclinic-latest.jar", "--server.port=${APPD_PORT_VAR}"]
+ENTRYPOINT java -jar spring-petclinic-latest.jar --server.port=${APPD_PORT_VAR}

@@ -17,7 +17,6 @@ pipeline {
         stage('Compile and test') {
                 steps {
                         echo 'BUILD STARTED'
-                        sh 'yum install java-1.8.0-openjdk-devel'
                         sh 'sudo ./mvnw package'
                         //sh "java -jar target/*.jar --server.port=$APP_PORT"
                          echo 'BUILD ENDED'
@@ -32,13 +31,13 @@ pipeline {
             
         //stage('Ansible build_container') {
         //        steps {
-        //               sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars \'app_port=$APP_PORT refistry_docker=$REGISTRY_DOCKER build_number=$BUILD_NUMBER'
+        //               sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars \'app_port=$APP_PORT registry_docker=$REGISTRY_DOCKER build_number=$BUILD_NUMBER'
         //        }
         //}
             
         //stage('Ansible deploy_container') {
         //        steps {
-        //               sh 'ansible-playbook devotools/ansible/deploy_container.yml --extra-vars app_port=$APP_PORT'
+        //               sh 'ansible-playbook devotools/ansible/deploy_container.yml'
         //        }
         //}
             

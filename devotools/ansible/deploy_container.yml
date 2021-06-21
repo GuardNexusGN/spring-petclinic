@@ -5,7 +5,7 @@
   become_user: root
   tasks:
     - name: Docker login
-      command: aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 887303199679.dkr.ecr.us-west-2.amazonaws.com
+      command: 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 887303199679.dkr.ecr.us-west-2.amazonaws.com'
     
     - name: Docker image build
       command: docker build -t my-first-ecr-repo --build-arg APPD_PORT={{ app_port }} {{ workspacej }}

@@ -11,7 +11,7 @@
         msg: "Port is: {{ app_port }}"
     
     - name: Docker image build
-      command: docker build -t {{ registry_docker }}:{{ build_number }} --build-arg app_port={{ app_port }} {{ workspacej }}
+      command: docker build -t {{ registry_docker }}:{{ build_number }} --build-arg APPD_PORT={{ app_port }} {{ workspacej }}
     
     - name: Docker image push
       command: docker push {{ registry_docker }}:{{ build_number }}

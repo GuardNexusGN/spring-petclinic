@@ -8,4 +8,4 @@ ARG app_port
 EXPOSE ${app_port} 
 
 RUN mv ./* spring-petclinic-latest.jar
-CMD [ "java", "spring-petclinic-latest.jar", "--server.port=${app_port}" ]
+ENTRYPOINT ["java","-jar","spring-petclinic-latest.jar", "--server.port=${app_port}"]

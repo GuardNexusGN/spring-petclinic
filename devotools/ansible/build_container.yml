@@ -11,5 +11,5 @@
       command: docker push {{ registry_docker }}:{{ build_number }}
       
     - name: Docker local image delete
-      command: docker rmi {{ refistry_docker }}:{{ build_number }}
+      command: docker rmi {{ registry_docker }}:{{ build_number }}
       

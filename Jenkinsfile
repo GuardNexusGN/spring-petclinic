@@ -17,15 +17,15 @@ pipeline {
         stage('Compile and test') {
                 steps {
                         echo 'BUILD STARTED'
-                        sh 'sudo ./mvnw package'
+                        //sh 'sudo ./mvnw package'
                         //sh "java -jar target/*.jar --server.port=$APP_PORT"
-                         echo 'BUILD ENDED'
+                        echo 'BUILD ENDED'
                 }
         }
         
         stage('Docker reauth') {
                 steps {
-                       sh 'docker login --username $USERNAME_FORDOCKER --password $PASSWORD_FORDOCKER'
+                       //sh 'docker login --username $USERNAME_FORDOCKER --password $PASSWORD_FORDOCKER'
                 }
         }
             

@@ -9,7 +9,7 @@
       
     - name: Print the port of an app
       debug:
-        msg: {{ app_port }}
+        msg: Port is: {{ app_port }}
     
     - name: Docker image build
       command: docker build -t {{ registry_docker }}:{{ build_number }} --build-arg app_port={{ app_port }} {{ workspacej }}

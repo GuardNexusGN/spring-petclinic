@@ -31,7 +31,7 @@ pipeline {
             
         stage('Ansible build_container') {
                 steps {
-                       sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars \'app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${BUILD_NUMBER} workspacej=${WORKSPACE} \''
+                       sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${BUILD_NUMBER} workspacej=${WORKSPACE} "
                 }
         }
             

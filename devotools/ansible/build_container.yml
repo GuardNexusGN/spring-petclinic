@@ -7,7 +7,7 @@
     - name: Docker image build
       command: docker login --username {{ usernamed }} --password {{ passwordd }} docker.io
       
-    - name: Print the gateway for each host when defined
+    - name: Print the port of an app
       debug:
         msg: {{ app_port }}
     

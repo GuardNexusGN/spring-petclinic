@@ -29,7 +29,7 @@ pipeline {
                 }
         }
             
-        stage('Ansible build and archive container') {
+        stage('Ansible deploy container') {
                 steps {
                        sh 'ansible-playbook devotools/ansible/deploy_container.yml --extra-vars "app_port=${APP_PORT} workspacej=${WORKSPACE} "'
                 }
@@ -74,9 +74,9 @@ pipeline {
         }*/
     }
                 
-    //post {
-    //    always {
-    //        archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-    //    }
-    //}
+    post {
+        always {
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+        }
+    }
 }

@@ -22,18 +22,19 @@ pipeline {
                         echo 'BUILD ENDED'
                 }
         }
-        
-        stage('Docker reauth') {
-                steps {
-                       sh 'docker login --username $USERNAME_FORDOCKER --password $PASSWORD_FORDOCKER docker.io'
-                }
-        }
             
-        stage('Ansible build_container') {
+        stage('Ansible build and archive container') {
                 steps {
                        sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${BUILD_NUMBER} workspacej=${WORKSPACE} usernamed=${USERNAME_FORDOCKER} passwordd=${PASSWORD_FORDOCKER} "'
                 }
         }
+            
+        stage('Ansible build and archive container') {
+                steps {
+                       sh 'ansible-playbook devotools/ansible/deploy_container.yml --extra-vars "app_port=${APP_PORT} workspacej=${WORKSPACE} "'
+                }
+        }    
+            
             
         //stage('Ansible deploy_container') {
         //        steps {

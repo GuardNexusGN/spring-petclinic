@@ -17,7 +17,7 @@ pipeline {
         stage('Compile and test') {
                 steps {
                         echo 'BUILD STARTED'
-                        sh 'sudo ./mvnw package'
+                        //sh 'sudo ./mvnw package'
                         //sh "java -jar target/*.jar --server.port=$APP_PORT"
                         echo 'BUILD ENDED'
                 }
@@ -29,11 +29,11 @@ pipeline {
                 }
         }
             
-        //stage('Ansible build_container') {
-        //        steps {
-        //               sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars \'app_port=$APP_PORT registry_docker=$REGISTRY_DOCKER build_number=$BUILD_NUMBER workspacej=$WORKSPACE'
-        //        }
-        //}
+        stage('Ansible build_container') {
+                steps {
+                       sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars \'app_port=$APP_PORT registry_docker=$REGISTRY_DOCKER build_number=$BUILD_NUMBER workspacej=$WORKSPACE\''
+                }
+        }
             
         //stage('Ansible deploy_container') {
         //        steps {

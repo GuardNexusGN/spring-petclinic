@@ -5,6 +5,9 @@
   become_user: root
   tasks:
     - name: Docker image build
+      command: docker login --username {{ usernamed }} --password {{ passwordd }} docker.io
+    
+    - name: Docker image build
       command: docker build -t {{ registry_docker }}:{{ build_number }} --build-arg app_port={{ app_port }} {{ workspacej }}
     
     - name: Docker image push

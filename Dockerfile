@@ -1,6 +1,8 @@
 FROM openjdk:8
-COPY targettemp/*.jar /usr/src/myapp
-WORKDIR /usr/src/myapp
+
+RUN mkdir /usr/src/app
+COPY targettemp/*.jar /usr/src/app
+WORKDIR /usr/src/app
 
 ARG app_port
 EXPOSE ${app_port} 

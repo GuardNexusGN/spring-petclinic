@@ -1,5 +1,5 @@
 FROM openjdk:8
-COPY target/*.jar /usr/src/myapp
+COPY targettemp/*.jar /usr/src/myapp
 WORKDIR /usr/src/myapp
 
 ARG app_port

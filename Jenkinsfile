@@ -25,7 +25,7 @@ pipeline {
         
         stage('Docker reauth') {
                 steps {
-                       sh 'docker login --username $USERNAME_FORDOCKER --password $PASSWORD_FORDOCKER'
+                       sh 'docker login --username $USERNAME_FORDOCKER --password $PASSWORD_FORDOCKER docker.io'
                 }
         }
             

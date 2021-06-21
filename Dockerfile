@@ -1,8 +1,8 @@
 FROM openjdk:8
 
-RUN mkdir /usr/src/app
-COPY targettemp/*.jar /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir /usr/petclinicapp
+COPY targettemp/*.jar /usr/petclinicapp
+WORKDIR /usr/petclinicapp
 
 ARG app_port
 EXPOSE ${app_port} 

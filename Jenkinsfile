@@ -7,9 +7,9 @@ pipeline {
     environment {
         APP_PORT='8080'
 
-        REGISTRY_DOCKER='guardnexus/petclinic'
-        USERNAME_FORDOCKER='guardnexus'
-        PASSWORD_FORDOCKER=credentials('guardnexus_docker_password')
+        //REGISTRY_DOCKER='guardnexus/petclinic'
+        //USERNAME_FORDOCKER='guardnexus'
+        //PASSWORD_FORDOCKER=credentials('guardnexus_docker_password')
         //CREDENTIALS_DOCKER=credentials('dockerhub_guardnexus') // CREDENTIALS_DOCKER_USR + CREDENTIALS_DOCKER_PSW
     }
   
@@ -23,11 +23,11 @@ pipeline {
                 }
         }
         
-        stage('Docker reauth') {
-                steps {
-                       //sh 'docker login --username $USERNAME_FORDOCKER --password $PASSWORD_FORDOCKER'
-                }
-        }
+        //stage('Docker reauth') {
+        //        steps {
+        //               sh 'docker login --username $USERNAME_FORDOCKER --password $PASSWORD_FORDOCKER'
+        //        }
+        //}
             
         //stage('Ansible build_container') {
         //        steps {

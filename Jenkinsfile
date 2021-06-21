@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 pipeline {
     agent { 
-        label 'worker_aws' 
+        label 'worker' 
     }
 	
     environment {

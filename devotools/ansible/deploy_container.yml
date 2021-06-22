@@ -8,10 +8,10 @@
       command: docker login --username AWS --password {{ aws_pass }} 887303199679.dkr.ecr.us-west-2.amazonaws.com
     
     - name: Docker image build
-      command: docker build -t my-first-ecr-repo --build-arg APPD_PORT={{ app_port }} {{ workspacej }}
+      command: docker build -t petclinic_repo --build-arg APPD_PORT={{ app_port }} {{ workspacej }}
     
     - name: Docker image tag
-      command: docker tag my-first-ecr-repo:latest 887303199679.dkr.ecr.us-west-2.amazonaws.com/my-first-ecr-repo:latest
+      command: docker tag petclinic_repo:latest 887303199679.dkr.ecr.us-west-2.amazonaws.com/petclinic_repo:latest
       
     - name: Docker local image push
-      command: docker push 887303199679.dkr.ecr.us-west-2.amazonaws.com/my-first-ecr-repo:latest
+      command: docker push 887303199679.dkr.ecr.us-west-2.amazonaws.com/petclinic_repo:latest

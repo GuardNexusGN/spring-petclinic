@@ -56,16 +56,16 @@ pipeline {
                                 [$class: 'TextParameterDefinition', defaultValue: '', description: 'Docker image version', name: 'versiond'],
                                 ])
                                 
-                                inputConfig = userInput.versiond?:''
+                                inputversiond = userInput.versiond?:''
                                 
-                                if(${inputConfig} == "") {
+                                if (${inputversiond} == "") {
                                         echo ("No qa env selected, continuing...")        
-                                } else if (${inputConfig} == "latest") { 
+                                } else if (${inputversiond} == "latest") { 
                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
                                         sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
                                 }
                                 else {
-                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + (${inputConfig})
+                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + ${inputversiond})
                                 }
                         }
                 }

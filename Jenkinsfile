@@ -6,6 +6,8 @@ pipeline {
 	
     environment {
         APP_PORT='8080'
+        VERSION = readMavenPom().getVersion()
+        //${BUILD_NUMBER}
 
         REGISTRY_DOCKER='guardnexus/petclinic'
         USERNAME_FORDOCKER='guardnexus'
@@ -27,7 +29,7 @@ pipeline {
             
         stage('Ansible build and archive container') {
                 steps {
-                       sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${BUILD_NUMBER} workspacej=${WORKSPACE} usernamed=${USERNAME_FORDOCKER} passwordd=${PASSWORD_FORDOCKER} "'
+                       sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${VERSION} workspacej=${WORKSPACE} usernamed=${USERNAME_FORDOCKER} passwordd=${PASSWORD_FORDOCKER} "'
                 }
         }
             

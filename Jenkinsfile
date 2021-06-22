@@ -125,9 +125,9 @@ pipeline {
         }*/
     }
                 
-    post {
-        always {
-            archiveArtifacts artifacts: 'targettemp/*.jar', fingerprint: true
-        }
-    }
+    //post {
+    //    always {
+    //        archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+    //    }
+    //}
 }

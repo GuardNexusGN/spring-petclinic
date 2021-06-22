@@ -51,23 +51,51 @@ pipeline {
                 steps {
                         script {
                                 def user_input = input(
-                                id: 'userInput', message: 'Run QA ENV (enter blank or version):', 
+                                id: 'userInput', message: 'Run QA ENV (enter none or version):', 
                                 parameters: [
                                 [$class: 'TextParameterDefinition', defaultValue: '', description: 'Docker image version', name: 'versiond'],
                                 ])
                                 
-                                if ("${user_input}" == "") {
+                                if ("${user_input}" == "none") {
                                         echo ("No qa env selected, continuing...")        
                                 } else if ("${user_input}" == "latest") { 
                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
-                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                        
+                                        try {
+                                                sh ('docker run --name qa_app -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                        } catch (Exception e) {
+                                                sh ('docker stop qa_app')
+                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                        }
                                 }
                                 else {
-                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
+                                        sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
+                                        
+                                        try {
+                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                        } catch (Exception e) {
+                                                sh ('docker stop qa_app')
+                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
+                                        }
                                 }
                         }
                 }
-        }    
+        }
+
+        /*agent {
+                docker {
+                    image 'maven:3.8.1-adoptopenjdk-11'
+                    args '-v $HOME/.m2:/root/.m2'
+                }
+        }
+            
+        stages {
+                stage('Build') {
+                    steps {
+                        sh 'mvn -B'
+                    }
+                }
+        }*/
                
             
         /*stage('Build image') {

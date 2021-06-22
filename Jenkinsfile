@@ -22,7 +22,7 @@ pipeline {
     stages('Do it on worker') {
         stage('Compile and test') {
                 steps {
-                        echo 'BUILD STARTED'
+                        echo 'BUILD STARTED - ${VERSION}'
                         //sh 'sudo ./mvnw package'
                         //sh 'java -jar target/*.jar --server.port=$APP_PORT'
                         echo 'BUILD ENDED'
@@ -56,16 +56,14 @@ pipeline {
                                 [$class: 'TextParameterDefinition', defaultValue: '', description: 'Docker image version', name: 'versiond'],
                                 ])
                                 
-                                inputversiond = userInput.versiond?:''
-                                
-                                if (${inputversiond} == "") {
+                                if (${userInput} == "") {
                                         echo ("No qa env selected, continuing...")        
-                                } else if (${inputversiond} == "latest") { 
+                                } else if (${userInput} == "latest") { 
                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
                                         sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
                                 }
                                 else {
-                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + ${inputversiond})
+                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + ${userInput})
                                 }
                         }
                 }

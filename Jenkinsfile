@@ -50,20 +50,20 @@ pipeline {
         stage('Test env version') {
                 steps {
                         script {
-                                def userInput = input(
+                                def user_input = input(
                                 id: 'userInput', message: 'Run QA ENV (enter blank or version):', 
                                 parameters: [
                                 [$class: 'TextParameterDefinition', defaultValue: '', description: 'Docker image version', name: 'versiond'],
                                 ])
                                 
-                                if (${userInput} == "") {
+                                if ("${user_input}" == "") {
                                         echo ("No qa env selected, continuing...")        
-                                } else if (${userInput} == "latest") { 
+                                } else if ("${user_input}" == "latest") { 
                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
                                         sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
                                 }
                                 else {
-                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + ${userInput})
+                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
                                 }
                         }
                 }

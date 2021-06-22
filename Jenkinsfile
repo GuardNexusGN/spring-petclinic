@@ -60,7 +60,7 @@ pipeline {
                                 
                                 if(${inputConfig} == "") {
                                         echo ("No qa env selected, continuing...")        
-                                } else if ((${inputConfig} == "latest") { 
+                                } else if (${inputConfig} == "latest") { 
                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
                                         sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
                                 }

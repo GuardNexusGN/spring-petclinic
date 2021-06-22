@@ -11,9 +11,10 @@ pipeline {
 
         REGISTRY_DOCKER='guardnexus/petclinic'
         USERNAME_FORDOCKER='guardnexus'
-        
         PASSWORD_FORDOCKER=credentials('guardnexus_docker_password')
-        AWS_ECR_PASS=credentials('aws_ecr_password')
+        
+        AWS_KEY_PASS=credentials('aws_access_key')
+        AWS_KEY_ACCESS_PASS=credentials('aws_secret_access_key')
         //CREDENTIALS_DOCKER=credentials('dockerhub_guardnexus') // CREDENTIALS_DOCKER_USR + CREDENTIALS_DOCKER_PSW
     }
   
@@ -35,7 +36,7 @@ pipeline {
             
         stage('Ansible deploy container') {
                 steps {
-                       sh 'ansible-playbook devotools/ansible/deploy_container.yml --extra-vars "aws_pass=${AWS_ECR_PASS} app_port=${APP_PORT} workspacej=${WORKSPACE} "'
+                       sh 'ansible-playbook devotools/ansible/deploy_container.yml --extra-vars "access_key=${AWS_KEY_PASS} secret_access_key=${AWS_KEY_ACCESS_PASS} app_port=${APP_PORT} workspacej=${WORKSPACE} "'
                 }
         }    
             

@@ -21,7 +21,7 @@
       register: aws_pass
       
     - name: Docker login
-      command: docker login --username AWS --password {{ aws_pass }} 887303199679.dkr.ecr.us-west-2.amazonaws.com
+      command: docker login --username AWS --password {{ aws_pass.stdout }} 887303199679.dkr.ecr.us-west-2.amazonaws.com
     
     - name: Docker image build
       command: docker build -t petclinic_repo --build-arg APPD_PORT={{ app_port }} {{ workspacej }}

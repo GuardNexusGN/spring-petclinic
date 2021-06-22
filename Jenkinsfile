@@ -65,6 +65,7 @@ pipeline {
                                                 sh ('docker run --name qa_app -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
                                         } catch (Exception e) {
                                                 sh ('docker stop qa_app')
+                                                sh ('docker rm qa_app')
                                                 sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
                                         }
                                 }
@@ -72,9 +73,10 @@ pipeline {
                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
                                         
                                         try {
-                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
                                         } catch (Exception e) {
                                                 sh ('docker stop qa_app')
+                                                sh ('docker rm qa_app')
                                                 sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
                                         }
                                 }

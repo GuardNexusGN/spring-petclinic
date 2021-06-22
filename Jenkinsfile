@@ -13,8 +13,8 @@ pipeline {
         USERNAME_FORDOCKER='guardnexus'
         PASSWORD_FORDOCKER=credentials('guardnexus_docker_password')
         
-        AWS_KEY_PASS=credentials('aws_access_key')
-        AWS_KEY_ACCESS_PASS=credentials('aws_secret_access_key')
+        AWS_KEY_PASS=credentials('access_key')
+        AWS_KEY_ACCESS_PASS=credentials('secret_access_key')
         //CREDENTIALS_DOCKER=credentials('dockerhub_guardnexus') // CREDENTIALS_DOCKER_USR + CREDENTIALS_DOCKER_PSW
     }
   

@@ -22,7 +22,7 @@ pipeline {
         stage('Compile and test') {
                 steps {
                         echo 'BUILD STARTED'
-                        //sh 'sudo ./mvnw package'
+                        sh 'sudo ./mvnw package'
                         //sh "java -jar target/*.jar --server.port=$APP_PORT"
                         echo 'BUILD ENDED'
                 }

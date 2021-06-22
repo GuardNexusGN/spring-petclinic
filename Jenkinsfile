@@ -6,6 +6,7 @@ pipeline {
 	
     environment {
         APP_PORT='8080'
+        QA_PORT='8081'
         VERSION = readMavenPom().getVersion()
         //${BUILD_NUMBER}
 
@@ -22,8 +23,8 @@ pipeline {
         stage('Compile and test') {
                 steps {
                         echo 'BUILD STARTED'
-                        sh 'sudo ./mvnw package'
-                        //sh "java -jar target/*.jar --server.port=$APP_PORT"
+                        //sh 'sudo ./mvnw package'
+                        //sh 'java -jar target/*.jar --server.port=$APP_PORT'
                         echo 'BUILD ENDED'
                 }
         }
@@ -38,21 +39,36 @@ pipeline {
                 steps {
                        sh 'ansible-playbook devotools/ansible/deploy_container.yml --extra-vars "access_key=${AWS_KEY_PASS} secret_access_key=${AWS_KEY_ACCESS_PASS} app_port=${APP_PORT} workspacej=${WORKSPACE} "'
                 }
-        }    
+        }
             
-            
-        //stage('Ansible deploy_container') {
+        //stage('Ask for test env') {
         //        steps {
-        //               sh 'ansible-playbook devotools/ansible/deploy_container.yml'
+        //                input('Do you want to run QA Env?')
         //        }
         //}
             
-            
-            
-            
-            
-            
-            
+        stage('Test env version') {
+                steps {
+                        script {
+                                def userInput = input(
+                                id: 'userInput', message: 'Run QA ENV (enter blank or version):', 
+                                parameters: [
+                                [$class: 'TextParameterDefinition', defaultValue: 'None', description: 'Docker image version', name: 'versiond'],
+                                ])
+                                
+                                if(userInput['versiond'] == "") {
+                                        echo ("No qa env selected, continuing...")        
+                                } else if (userInput['versiond'] == "latest") { 
+                                        sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
+                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                }
+                                else {
+                                        sh ('docker run -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + userInput['versiond'])
+                                }
+                        }
+                }
+        }    
+               
             
         /*stage('Build image') {
                 steps {

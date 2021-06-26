@@ -92,13 +92,13 @@ pipeline {
                                                 }
                                         }
                                 } catch(err) {
-                                        def user = err.getCauses()[0].getUser()
+                                        //def user = err.getCauses()[0].getUser()
                                         
-                                        if('SYSTEM' == user.toString()) {
+                                        //if('SYSTEM' == user.toString()) {
                                                 echo 'Input timout'
-                                        } else {
-                                                echo "Aborted by: [${user}]"
-                                        }
+                                        //} else {
+                                        //        echo "Aborted by: [${user}]"
+                                        //}
                                 }
                         }
                 }

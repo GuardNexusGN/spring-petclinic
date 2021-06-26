@@ -134,7 +134,7 @@ pipeline {
     post {
         always {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-                sh 'rm -rf ${WORKSPACE}'
+                //sh 'rm -rf ${WORKSPACE}'
         }
     }
 }

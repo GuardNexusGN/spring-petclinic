@@ -31,7 +31,7 @@ pipeline {
         
         stage('Ansible build and archive container') {
                 steps {
-                       sh 'ansible-playbook devotools/ansible/trigger_roles_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${VERSION} workspacej=${WORKSPACE} usernamed=${USERNAME_FORDOCKER} passwordd=${PASSWORD_FORDOCKER} "'
+                       sh 'ansible-playbook devotools/ansible/trigger_roles_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${VERSION} workspacej=${WORKSPACE} usernamed=${USERNAME_FORDOCKER} passwordd=${PASSWORD_FORDOCKER} access_key=${AWS_KEY_PASS} secret_access_key=${AWS_KEY_ACCESS_PASS}"'
                 }
         }
             

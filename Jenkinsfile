@@ -23,7 +23,7 @@ pipeline {
         stage('Compile and test') {
                 steps {
                         echo 'BUILD STARTED - ${VERSION}'
-                        //sh 'sudo ./mvnw package'
+                        sh 'sudo ./mvnw package'
                         //sh 'java -jar target/*.jar --server.port=$APP_PORT'
                         echo 'BUILD ENDED'
                 }
@@ -53,10 +53,16 @@ pipeline {
                                 def user_input = input(
                                 id: 'userInput', message: 'Run QA ENV (enter none or version):', 
                                 parameters: [
-                                [$class: 'TextParameterDefinition', defaultValue: '', description: 'Docker image version', name: 'versiond'],
+                                [$class: 'TextParameterDefinition', defaultValue: 'none', description: 'Docker image version', name: 'versiond'],
                                 ])
                                 
                                 if ("${user_input}" == "none") {
+                                        try {
+                                                sh ('docker stop qa_app')
+                                        } catch (Exception e) {
+                                                echo ("No qa docker container on background") 
+                                        }
+                                        
                                         echo ("No qa env selected, continuing...")        
                                 } else if ("${user_input}" == "latest") { 
                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')

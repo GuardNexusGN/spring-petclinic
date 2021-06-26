@@ -7,6 +7,7 @@ pipeline {
     environment {
         APP_PORT='8080'
         QA_PORT='8081'
+        INPUT_VERSION=''
         VERSION = readMavenPom().getVersion()
         //${BUILD_NUMBER}
 
@@ -64,7 +65,7 @@ pipeline {
                                                         try {
                                                                 sh ('docker stop qa_app')
                                                         } catch (Exception e) {
-                                                                echo ("No qa docker container on background") 
+                                                                echo ('No qa docker container on background') 
                                                         }
 
                                                         echo ("No qa env selected, continuing...")        
@@ -80,14 +81,17 @@ pipeline {
                                                         }
                                                 }
                                                 else {
+                                                        INPUT_VERSION = "${user_input}"
+                                                        echo ('Selected version: ${INPUT_VERSION}')
+                                                        
                                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
 
                                                         try {
-                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
+                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${INPUT_VERSION}')
                                                         } catch (Exception e) {
                                                                 sh ('docker stop qa_app')
                                                                 sh ('docker rm qa_app')
-                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
+                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${INPUT_VERSION}')
                                                         }
                                                 }
                                         }
@@ -95,7 +99,7 @@ pipeline {
                                         //def user = err.getCauses()[0].getUser()
                                         
                                         //if('SYSTEM' == user.toString()) {
-                                                echo 'Input timout'
+                                                echo 'Input timeout'
                                         //} else {
                                         //        echo "Aborted by: [${user}]"
                                         //}

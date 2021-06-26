@@ -28,8 +28,14 @@ pipeline {
                         echo 'BUILD ENDED'
                 }
         }
-            
+        
         stage('Ansible build and archive container') {
+                steps {
+                       sh 'ansible-playbook devotools/ansible/trigger_roles_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${VERSION} workspacej=${WORKSPACE} usernamed=${USERNAME_FORDOCKER} passwordd=${PASSWORD_FORDOCKER} "'
+                }
+        }
+            
+        /*stage('Ansible build and archive container') {
                 steps {
                        sh 'ansible-playbook devotools/ansible/build_container.yml --extra-vars "app_port=${APP_PORT} registry_docker=${REGISTRY_DOCKER} build_number=${VERSION} workspacej=${WORKSPACE} usernamed=${USERNAME_FORDOCKER} passwordd=${PASSWORD_FORDOCKER} "'
                 }
@@ -39,13 +45,7 @@ pipeline {
                 steps {
                        sh 'ansible-playbook devotools/ansible/deploy_container.yml --extra-vars "access_key=${AWS_KEY_PASS} secret_access_key=${AWS_KEY_ACCESS_PASS} app_port=${APP_PORT} workspacej=${WORKSPACE} "'
                 }
-        }
-            
-        //stage('Ask for test env') {
-        //        steps {
-        //                input('Do you want to run QA Env?')
-        //        }
-        //}
+        }*/
             
         stage('Test env version') {
                 steps {

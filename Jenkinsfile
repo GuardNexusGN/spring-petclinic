@@ -7,7 +7,6 @@ pipeline {
     environment {
         APP_PORT='8080'
         QA_PORT='8081'
-        INPUT_VERSION=''
         VERSION = readMavenPom().getVersion()
         //${BUILD_NUMBER}
 
@@ -68,7 +67,7 @@ pipeline {
                                                                 echo ('No qa docker container on background') 
                                                         }
 
-                                                        echo ("No qa env selected, continuing...")        
+                                                        echo ('No qa env selected, continuing...')        
                                                 } else if ("${user_input}" == "latest") { 
                                                         sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
 
@@ -79,19 +78,17 @@ pipeline {
                                                                 sh ('docker rm qa_app')
                                                                 sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
                                                         }
-                                                }
-                                                else {
-                                                        INPUT_VERSION = "${user_input}"
-                                                        echo ('Selected version: ${INPUT_VERSION}')
-                                                        
-                                                        sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
+                                                } else {
+                                                        echo ("Selected version: ${user_input}")
+
+                                                        sh ("docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io")
 
                                                         try {
-                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${INPUT_VERSION}')
+                                                                sh ("docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${user_input}")
                                                         } catch (Exception e) {
-                                                                sh ('docker stop qa_app')
-                                                                sh ('docker rm qa_app')
-                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${INPUT_VERSION}')
+                                                                sh ("docker stop qa_app")
+                                                                sh ("docker rm qa_app")
+                                                                sh ("docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${user_input}")
                                                         }
                                                 }
                                         }

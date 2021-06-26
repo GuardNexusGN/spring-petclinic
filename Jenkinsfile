@@ -22,7 +22,9 @@ pipeline {
     stages('Do it on worker') {
         stage('Compile and test') {
                 steps {
-                        echo 'BUILD STARTED - $VERSION - $WORKSPACE'
+                        echo sh(script: 'env|sort', returnStdout: true)
+                        
+                        echo 'BUILD STARTED'
                         sh 'sudo ./mvnw package'
                         //sh 'java -jar target/*.jar --server.port=$APP_PORT'
                         echo 'BUILD ENDED'

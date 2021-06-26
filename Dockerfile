@@ -1,7 +1,7 @@
 FROM openjdk:8
 
 RUN mkdir /usr/petclinicapp
-COPY targettemp/*.jar /usr/petclinicapp
+COPY target/*.jar /usr/petclinicapp
 WORKDIR /usr/petclinicapp
 
 ARG APPD_PORT=8080

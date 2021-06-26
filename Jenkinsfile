@@ -22,7 +22,7 @@ pipeline {
     stages('Do it on worker') {
         stage('Compile and test') {
                 steps {
-                        echo 'BUILD STARTED - ${VERSION}'
+                        echo 'BUILD STARTED - ${VERSION} - ${WORKSPACE}'
                         sh 'sudo ./mvnw package'
                         //sh 'java -jar target/*.jar --server.port=$APP_PORT'
                         echo 'BUILD ENDED'
@@ -133,7 +133,8 @@ pipeline {
                 
     post {
         always {
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                sh 'rm -rf ${WORKSPACE}'
         }
     }
 }

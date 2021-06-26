@@ -52,42 +52,52 @@ pipeline {
         stage('Test env version') {
                 steps {
                         script {
-                                timeout(time: 180, unit: 'SECONDS') {
-                                        def user_input = input(
-                                        id: 'userInput', message: 'Run QA ENV (enter none or version):', 
-                                        parameters: [
-                                        [$class: 'TextParameterDefinition', defaultValue: 'none', description: 'Docker image version', name: 'versiond'],
-                                        ])
+                                try {
+                                        timeout(time: 180, unit: 'SECONDS') {
+                                                def user_input = input(
+                                                id: 'userInput', message: 'Run QA ENV (enter none or version):', 
+                                                parameters: [
+                                                [$class: 'TextParameterDefinition', defaultValue: 'none', description: 'Docker image version', name: 'versiond'],
+                                                ])
 
-                                        if ("${user_input}" == "none") {
-                                                try {
-                                                        sh ('docker stop qa_app')
-                                                } catch (Exception e) {
-                                                        echo ("No qa docker container on background") 
+                                                if ("${user_input}" == "none") {
+                                                        try {
+                                                                sh ('docker stop qa_app')
+                                                        } catch (Exception e) {
+                                                                echo ("No qa docker container on background") 
+                                                        }
+
+                                                        echo ("No qa env selected, continuing...")        
+                                                } else if ("${user_input}" == "latest") { 
+                                                        sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
+
+                                                        try {
+                                                                sh ('docker run --name qa_app -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                                        } catch (Exception e) {
+                                                                sh ('docker stop qa_app')
+                                                                sh ('docker rm qa_app')
+                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                                        }
                                                 }
+                                                else {
+                                                        sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
 
-                                                echo ("No qa env selected, continuing...")        
-                                        } else if ("${user_input}" == "latest") { 
-                                                sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
-
-                                                try {
-                                                        sh ('docker run --name qa_app -d -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
-                                                } catch (Exception e) {
-                                                        sh ('docker stop qa_app')
-                                                        sh ('docker rm qa_app')
-                                                        sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:${VERSION}')
+                                                        try {
+                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
+                                                        } catch (Exception e) {
+                                                                sh ('docker stop qa_app')
+                                                                sh ('docker rm qa_app')
+                                                                sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
+                                                        }
                                                 }
                                         }
-                                        else {
-                                                sh ('docker login --username ${USERNAME_FORDOCKER} --password ${PASSWORD_FORDOCKER} docker.io')
-
-                                                try {
-                                                        sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
-                                                } catch (Exception e) {
-                                                        sh ('docker stop qa_app')
-                                                        sh ('docker rm qa_app')
-                                                        sh ('docker run -d --name qa_app -p ${QA_PORT}:${APP_PORT}/tcp ${REGISTRY_DOCKER}:' + '${user_input}')
-                                                }
+                                } catch(err) {
+                                        def user = err.getCauses()[0].getUser()
+                                        
+                                        if('SYSTEM' == user.toString()) {
+                                                echo 'Input timout'
+                                        } else {
+                                                echo "Aborted by: [${user}]"
                                         }
                                 }
                         }
